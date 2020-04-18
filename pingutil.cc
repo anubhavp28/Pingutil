@@ -4,6 +4,7 @@
 #include <cstdio>
 #include <vector>
 #include <iomanip>
+#include <limits>
 
 #include <stdlib.h>
 #include <malloc.h>
@@ -20,7 +21,7 @@
 #include <netinet/icmp6.h>
 #include <netinet/ip.h>
 
-#include "include/cxxopts.hpp"
+#include "include/cxxopts.hpp" /* external lib for argument parsing */
 
 
 namespace pingutil {
@@ -230,7 +231,8 @@ namespace pingutil {
 			PrintOverallStats(domain_name, ip);
 
 			/* free memory */
-			free(domain_name);
+			if (domain_name)
+				free(domain_name);
 			close(sockfd);
 			return 0;
 		}
@@ -351,7 +353,8 @@ namespace pingutil {
 			PrintOverallStats(domain_name, ip);
 
 			/* free memory */
-			free(domain_name);
+			if (domain_name)
+				free(domain_name);
 			close(sockfd);
 			return 0;
 		}
@@ -362,8 +365,13 @@ namespace pingutil {
 			rtt = double(time_end.tv_sec - time_start.tv_sec) * 1000.0 + double(time_end.tv_nsec - time_start.tv_nsec) / 1000000.0;
 			stats.rtt.push_back(rtt); /* keep rtt to gather overall statistics */
 
-			std::cout<<ICMP_PACKET_SIZE<<" bytes from "<<domain_name<<" ("<<ip<<"): icmp_seq="
-					 <<imcp_seq<<" ttl="<<ttl<<" time="<<rtt<<"ms\n";
+
+			std::cout<<ICMP_PACKET_SIZE<<" bytes from ";
+			if (domain_name)
+				std::cout<<domain_name<<" ("<<ip<<")";
+			else
+				std::cout<<ip;
+			std::cout<<": icmp_seq="<<imcp_seq<<" ttl="<<ttl<<" time="<<rtt<<"ms\n";
 		}
 
 		/* PrintOverallStats() : prints statistics for a single ping. */
@@ -374,7 +382,7 @@ namespace pingutil {
 				std::cout<<"--- "<<ip<<" ping statistics ---\n";
 
 			double total_rtt;
-			double min_rtt = 1e8;
+			double min_rtt = std::numeric_limits<double>::infinity();
 			double max_rtt = 0;
 			double avg_rtt;
 			double mdev_rtt;
