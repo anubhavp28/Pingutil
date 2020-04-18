@@ -43,6 +43,27 @@ PING dns.google (8.8.8.8) with 56 bytes of data (icmp packet size = 64 bytes)
 5 packets transmitted, 5 received, 0.00% packet loss, time 449.58ms
 rtt min/avg/max/mdev = 70.91/89.92/109.70/3.96 ms
 
+>>> sudo ./pingutil --help
+pingutil - Send ICMPv4/ICMPv6 ECHO_REQUEST to network hosts.
+
+Example Usage : >> pingutil facebook.com
+ >> pingutil 157.240.16.35
+ >> pingutil --ttl 100 google.com
+ >> pingutil 2a03:2880:f12f:83:face:b00c:0:25de
+ >> pingutil -6 google.com
+ >> pingutil -c 10 -4 google.com 
+
+Usage:
+  pingutil [OPTION...] <destination_host>
+
+  -c, --count arg    stop after given responses
+      --timeout arg  time to wait for response in seconds (default: 3)
+      --ttl arg      set time to live (default: 64)
+  -4, --forceip4     use IPv4
+  -6, --forceip6     use IPv6
+  -h, --help         print help
+
+
 ```
 
 ## Features
