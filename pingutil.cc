@@ -470,8 +470,11 @@ namespace pingutil {
 
 }
 
+
+/* Instance of Pinger */
 pingutil::Pinger pngr;
 
+/* Signal Handler for SIG_INT (Ctrl + C) */
 void SigIntHandler(int sig) {
 	pngr.StopPingLoop();
 }
@@ -492,10 +495,10 @@ int main(int argc, char *argv[]) {
 	options.positional_help("<destination_host>");
 
 	options.add_options()
-        ("c,count", "stop after given responses", cxxopts::value<int>())
-        ("d,timeout", "time to wait for response in seconds", cxxopts::value<int>()->default_value("1"))
-        ("t,ttl", "set time to live", cxxopts::value<int>()->default_value("64"))
-        ("4,forceip4", "use IPv4")
+		("c,count", "stop after given responses", cxxopts::value<int>())
+		("d,timeout", "time to wait for response in seconds", cxxopts::value<int>()->default_value("1"))
+		("t,ttl", "set time to live", cxxopts::value<int>()->default_value("64"))
+		("4,forceip4", "use IPv4")
 		("6,forceip6", "use IPv6")
 		("h,help", "print help")
 		("destination_host", "Hostname or IPv4/IPv6 address of the destination network host", cxxopts::value<std::string>())
