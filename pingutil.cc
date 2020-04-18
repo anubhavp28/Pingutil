@@ -502,7 +502,7 @@ int main(int argc, char *argv[]) {
 		("6,forceip6", "use IPv6")
 		("h,help", "print help")
 		("destination_host", "Hostname or IPv4/IPv6 address of the destination network host", cxxopts::value<std::string>())
-    ;
+	;
 
 	options.parse_positional({"destination_host"});
 	
