@@ -79,7 +79,6 @@ namespace pingutil {
 			
 			/* resolve the hostname into a list of address */
 			if (error = getaddrinfo(hostname.c_str(), NULL, NULL, &result) != 0) {
-				std::cout<<"Unable to resolve hostname : "<<hostname<<'\n';
 				return NULL;
 			}
 			
@@ -471,14 +470,12 @@ namespace pingutil {
 
 }
 
-pingutil::Pinger p;
+pingutil::Pinger pngr;
 
 void SigIntHandler(int sig) {
-	p.StopPingLoop();
+	pngr.StopPingLoop();
 }
 
-// TODO : Check with no internet.
-// TODO : No memory leak.
 
 int main(int argc, char *argv[]) {
 
@@ -492,7 +489,7 @@ int main(int argc, char *argv[]) {
 
 	cxxopts::Options options("pingutil", help_str);
 
-    options.positional_help("<destination_host>");
+	options.positional_help("<destination_host>");
 
 	options.add_options()
         ("c,count", "stop after given responses", cxxopts::value<int>())
@@ -549,6 +546,6 @@ int main(int argc, char *argv[]) {
 
 	destination_host = args["destination_host"].as<std::string>();
 	signal(SIGINT, SigIntHandler);
-	p.Ping(destination_host, ttl, count, timeout, forceip4, forceip6);
+	pngr.Ping(destination_host, ttl, count, timeout, forceip4, forceip6);
 	return 0;
 }
